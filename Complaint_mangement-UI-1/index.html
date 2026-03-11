@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ComplaintOS — Admin</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
+      <div class="logo-text-wrap">
+        <span class="logo-text">ComplaintOS</span>
+        <span class="logo-sub">Admin Panel</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <span class="nav-label">MAIN MENU</span>
+      <a href="#" class="nav-item active" data-section="dashboard">
+        <div class="nav-icon"><i class="fa-solid fa-chart-pie"></i></div>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-section="users">
+        <div class="nav-icon"><i class="fa-solid fa-users"></i></div>
+        <span>Users</span>
+      </a>
+      <a href="#" class="nav-item" data-section="complaints">
+        <div class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+        <span>Complaints</span>
+      </a>
+      <span class="nav-label">ACTIONS</span>
+      <a href="#" class="nav-item" data-section="create-complaint">
+        <div class="nav-icon"><i class="fa-solid fa-plus-circle"></i></div>
+        <span>Create Complaint</span>
+      </a>
+      <a href="#" class="nav-item" data-section="lookup">
+        <div class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+        <span>Lookup</span>
+      </a>
+      <a href="#" class="nav-item" data-section="delete-status">
+        <div class="nav-icon"><i class="fa-solid fa-trash-can"></i></div>
+        <span>Delete By Status</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar">A</div>
+        <div class="user-info">
+          <span class="user-name">Admin</span>
+          <span class="user-role">System Administrator</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+      <div class="topbar-left">
+        <div class="breadcrumb">
+          <span class="breadcrumb-home"><i class="fa-solid fa-house"></i></span>
+          <span class="breadcrumb-sep">/</span>
+          <span class="breadcrumb-current" id="topbarTitle">Dashboard</span>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
+          <i class="fa-solid fa-moon" id="themeIcon"></i>
+        </button>
+        <button class="refresh-btn" id="refreshBtn" title="Refresh">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+        <div class="api-status" id="apiStatus" title="API Status">
+          <span class="status-dot"></span>
+          <span class="status-text">Live</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- DASHBOARD -->
+    <section class="section active" id="section-dashboard">
+      <div class="section-header">
+        <div>
+          <h2>Dashboard</h2>
+          <p>Welcome back, Admin. Here's what's happening.</p>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card stat-blue">
+          <div class="stat-top">
+            <span class="stat-label">Total Complaints</span>
+            <div class="stat-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+          </div>
+          <span class="stat-value" id="val-total-complaints">—</span>
+          <div class="stat-bar"><div class="stat-bar-fill blue-fill" id="bar-total"></div></div>
+        </div>
+        <div class="stat-card stat-orange">
+          <div class="stat-top">
+            <span class="stat-label">Open</span>
+            <div class="stat-icon"><i class="fa-solid fa-circle-exclamation"></i></div>
+          </div>
+          <span class="stat-value" id="val-open">—</span>
+          <div class="stat-bar"><div class="stat-bar-fill orange-fill" id="bar-open"></div></div>
+        </div>
+        <div class="stat-card stat-green">
+          <div class="stat-top">
+            <span class="stat-label">Resolved</span>
+            <div class="stat-icon"><i class="fa-solid fa-circle-check"></i></div>
+          </div>
+          <span class="stat-value" id="val-resolved">—</span>
+          <div class="stat-bar"><div class="stat-bar-fill green-fill" id="bar-resolved"></div></div>
+        </div>
+        <div class="stat-card stat-violet">
+          <div class="stat-top">
+            <span class="stat-label">Total Users</span>
+            <div class="stat-icon"><i class="fa-solid fa-user-group"></i></div>
+          </div>
+          <span class="stat-value" id="val-users">—</span>
+          <div class="stat-bar"><div class="stat-bar-fill violet-fill" id="bar-users"></div></div>
+        </div>
+      </div>
+
+      <!-- Resolution Rate -->
+      <div class="card resolution-card">
+        <div class="res-header">
+          <div>
+            <span class="res-title">Resolution Rate</span>
+            <span class="res-sub">Percentage of complaints marked resolved</span>
+          </div>
+          <span class="res-pct" id="res-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+        </div>
+        <div class="res-legend">
+          <span class="leg"><span class="leg-dot orange-dot"></span>Open</span>
+          <span class="leg"><span class="leg-dot green-dot"></span>Resolved</span>
+        </div>
+      </div>
+
+      <div class="recent-section">
+        <div class="recent-block">
+          <div class="block-header">
+            <h3><i class="fa-solid fa-clock-rotate-left"></i> Recent Complaints</h3>
+            <button class="link-btn" data-section="complaints">View All <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+          <div class="mini-table-wrap">
+            <table class="mini-table">
+              <thead><tr><th>ID</th><th>Title</th><th>Status</th><th>User</th></tr></thead>
+              <tbody id="recent-complaints-body"><tr><td colspan="4" class="loading-row"><span class="spinner"></span></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="recent-block">
+          <div class="block-header">
+            <h3><i class="fa-solid fa-user-clock"></i> Recent Users</h3>
+            <button class="link-btn" data-section="users">View All <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+          <div class="mini-table-wrap">
+            <table class="mini-table">
+              <thead><tr><th>ID</th><th>Name</th><th>Email</th></tr></thead>
+              <tbody id="recent-users-body"><tr><td colspan="3" class="loading-row"><span class="spinner"></span></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USERS -->
+    <section class="section" id="section-users">
+      <div class="section-header">
+        <div><h2>User Management</h2><p>Register, search and manage users</p></div>
+      </div>
+      <div class="two-col-cards">
+        <div class="card">
+          <div class="card-header">
+            <i class="fa-solid fa-user-plus"></i><h3>Register New User</h3>
+          </div>
+          <form id="registerUserForm" class="stacked-form">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="reg-name" placeholder="John Doe" required/>
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="reg-email" placeholder="john@example.com" required/>
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" id="reg-password" placeholder="••••••••" required/>
+            </div>
+            <button type="submit" class="btn btn-accent"><i class="fa-solid fa-user-plus"></i> Register</button>
+          </form>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <i class="fa-solid fa-envelope-open-text"></i><h3>Search by Email</h3>
+          </div>
+          <div class="stacked-form">
+            <div class="form-group">
+              <label>Email Address</label>
+              <div class="input-row">
+                <input type="email" id="search-email" placeholder="user@example.com"/>
+                <button class="btn btn-accent" id="searchEmailBtn"><i class="fa-solid fa-search"></i></button>
+              </div>
+            </div>
+            <div id="email-search-result" class="lookup-result hidden"></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <i class="fa-solid fa-users"></i><h3>All Users</h3>
+          <button class="btn btn-ghost btn-sm ml-auto" id="refreshUsers"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Actions</th></tr></thead>
+            <tbody id="users-tbody"><tr><td colspan="4" class="loading-row"><span class="spinner"></span> Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLAINTS -->
+    <section class="section" id="section-complaints">
+      <div class="section-header">
+        <div><h2>Complaints</h2><p>Manage all system complaints</p></div>
+      </div>
+      <div class="filter-bar">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="complaintSearch" placeholder="Search title or description…"/>
+        </div>
+        <select id="statusFilter" class="filter-select">
+          <option value="">All Status</option>
+          <option value="OPEN">OPEN</option>
+          <option value="RESOLVED">RESOLVED</option>
+        </select>
+        <button class="btn btn-ghost btn-sm" id="refreshComplaints"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+      </div>
+      <div class="card">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Title</th><th>Description</th><th>Status</th><th>User</th><th>Created</th><th>Actions</th></tr></thead>
+            <tbody id="complaints-tbody"><tr><td colspan="7" class="loading-row"><span class="spinner"></span> Loading...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- CREATE COMPLAINT -->
+    <section class="section" id="section-create-complaint">
+      <div class="section-header">
+        <div><h2>Create Complaint</h2><p>Submit a new complaint</p></div>
+      </div>
+      <div class="card form-card-lg">
+        <div class="card-header">
+          <i class="fa-solid fa-file-circle-plus"></i><h3>New Complaint</h3>
+        </div>
+        <form id="createComplaintForm" class="stacked-form">
+          <div class="form-group">
+            <label>Title</label>
+            <input type="text" id="comp-title" placeholder="e.g. Internet Not Working" required/>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="comp-desc" rows="4" placeholder="Describe the issue…" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Assign to User</label>
+            <select id="comp-userid" class="filter-select full-width" required>
+              <option value="">— Loading users… —</option>
+            </select>
+            <span class="field-hint"><i class="fa-solid fa-circle-info"></i> Loaded live from database</span>
+          </div>
+          <button type="submit" class="btn btn-accent btn-lg"><i class="fa-solid fa-paper-plane"></i> Submit Complaint</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- LOOKUP -->
+    <section class="section" id="section-lookup">
+      <div class="section-header">
+        <div><h2>Lookup</h2><p>Find user or complaint by ID</p></div>
+      </div>
+      <div class="two-col-cards">
+        <div class="card">
+          <div class="card-header"><i class="fa-solid fa-id-card"></i><h3>Get User by ID</h3></div>
+          <div class="stacked-form">
+            <div class="form-group">
+              <label>User ID</label>
+              <div class="input-row">
+                <input type="number" id="lookup-user-id" placeholder="e.g. 1" min="1"/>
+                <button class="btn btn-accent" id="lookupUserBtn"><i class="fa-solid fa-search"></i></button>
+              </div>
+            </div>
+            <div id="lookup-user-result" class="lookup-result hidden"></div>
+            <div id="user-complaints-wrap" class="hidden">
+              <div class="sub-header"><i class="fa-solid fa-list"></i><span id="user-complaints-title">Complaints</span></div>
+              <div class="mini-table-wrap">
+                <table class="mini-table">
+                  <thead><tr><th>ID</th><th>Title</th><th>Status</th><th>Date</th></tr></thead>
+                  <tbody id="user-complaints-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><i class="fa-solid fa-file-magnifying-glass"></i><h3>Get Complaint by ID</h3></div>
+          <div class="stacked-form">
+            <div class="form-group">
+              <label>Complaint ID</label>
+              <div class="input-row">
+                <input type="number" id="lookup-complaint-id" placeholder="e.g. 1" min="1"/>
+                <button class="btn btn-accent" id="lookupComplaintBtn"><i class="fa-solid fa-search"></i></button>
+              </div>
+            </div>
+            <div id="lookup-complaint-result" class="lookup-result hidden"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DELETE BY STATUS -->
+    <section class="section" id="section-delete-status">
+      <div class="section-header">
+        <div><h2>Delete By Status</h2><p>Bulk delete complaints</p></div>
+      </div>
+      <div class="card form-card-sm danger-card">
+        <div class="card-header"><i class="fa-solid fa-trash-can"></i><h3>Bulk Delete</h3></div>
+        <div class="danger-warning">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>This is <strong>irreversible</strong>. All matching complaints will be permanently deleted.</span>
+        </div>
+        <form id="deleteByStatusForm" class="stacked-form">
+          <div class="form-group">
+            <label>Status to Delete</label>
+            <select id="del-status" class="filter-select full-width">
+              <option value="OPEN">OPEN</option>
+              <option value="RESOLVED">RESOLVED</option>
+            </select>
+          </div>
+          <div class="status-preview"><i class="fa-solid fa-circle-info"></i><span id="status-preview-text">Loading…</span></div>
+          <button type="submit" class="btn btn-danger btn-lg"><i class="fa-solid fa-trash-can"></i> Delete Complaints</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- UPDATE USER MODAL -->
+  <div class="modal-overlay" id="updateUserModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-pen"></i> Update User</h3>
+        <button class="modal-close" id="closeUpdateUserModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="updateUserForm" class="stacked-form">
+        <input type="hidden" id="upd-user-id"/>
+        <div class="form-group"><label>Full Name</label><input type="text" id="upd-user-name" required/></div>
+        <div class="form-group"><label>Email</label><input type="email" id="upd-user-email" required/></div>
+        <div class="form-group"><label>Password</label><input type="password" id="upd-user-pass" placeholder="Enter password" required/></div>
+        <button type="submit" class="btn btn-accent"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- UPDATE COMPLAINT MODAL -->
+  <div class="modal-overlay" id="updateModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-pen-to-square"></i> Update Complaint</h3>
+        <button class="modal-close" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="updateComplaintForm" class="stacked-form">
+        <input type="hidden" id="update-id"/>
+        <div class="form-group"><label>Description</label><textarea id="update-desc" rows="3"></textarea></div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="update-status" class="filter-select full-width">
+            <option value="OPEN">OPEN</option>
+            <option value="RESOLVED">RESOLVED</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-accent"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- VIEW COMPLAINT MODAL -->
+  <div class="modal-overlay" id="viewModal">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-eye"></i> Complaint Details</h3>
+        <button class="modal-close" id="closeViewModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="detail-body" id="complaint-detail-body"></div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal modal-sm">
+      <div class="modal-header danger">
+        <h3><i class="fa-solid fa-triangle-exclamation"></i> Confirm Delete</h3>
+        <button class="modal-close" id="closeConfirmModal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="confirm-text" id="confirmText">Are you sure?</p>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" id="cancelDelete">Cancel</button>
+        <button class="btn btn-danger" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
