@@ -16,7 +16,7 @@ import java.util.Map;
             String username = data.get("username");
             String password = data.get("password");
 
-            if(username.equals("admin") && password.equals("1234")){
+            if(username.equals("dhruv") && password.equals("dhruv123")){
                 return ResponseEntity.ok("success");
             }
 
