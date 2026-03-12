@@ -66,7 +66,7 @@ function updateBecomeAdminBar() {
 roleSwitcher.addEventListener('click', function () {
   const modal = document.getElementById("adminLoginModal");
   if (modal) {
-    modal.style.display = "flex";
+    modal.classList.add('open');
   }
 });
 
@@ -899,8 +899,7 @@ if (adminLoginForm) {
 
       localStorage.setItem("clos-role", "ADMIN");
 
-      const modal = document.getElementById("adminLoginModal");
-      modal.style.display = "none";
+    document.getElementById("adminLoginModal").classList.remove('open');
 
       location.reload();
 
@@ -910,3 +909,10 @@ if (adminLoginForm) {
 
   });
 }
+document.getElementById('closeAdminLogin').addEventListener('click', function () {
+  document.getElementById('adminLoginModal').classList.remove('open');
+});
+
+document.getElementById('adminLoginModal').addEventListener('click', function (e) {
+  if (e.target === this) this.classList.remove('open');
+});
