@@ -26,9 +26,16 @@ public class UserServices {
         return repo.findById(id).orElse(new User());
     }
 
-    public List<User> getAllUser() {
-        return repo.findAll();
+    public List<User> getAllUsers(String role){
 
+        List<User> users = repo.findAll();
+
+        // jo USER hoy to email hide
+        if(!role.equals("ADMIN")){
+            users.forEach(user -> user.setEmail(null));
+        }
+
+        return users;
     }
 
     public void deleteUser(Integer id) {

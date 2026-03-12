@@ -4,10 +4,17 @@ import com.example.complaint_management.model.User;
 import com.example.complaint_management.services.UserServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*", methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE,
+        RequestMethod.OPTIONS
+})
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -27,8 +34,8 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<User> getAllUser(){
-        return service.getAllUser();
+    public List<User> getAllUsers(@RequestParam(required=false,defaultValue="ADMIN")String role){
+        return service.getAllUsers(role);
     }
 
     @DeleteMapping("/del/{id}")

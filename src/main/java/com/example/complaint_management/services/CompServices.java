@@ -26,40 +26,64 @@ public class CompServices {
         return repo.findById(id).orElse(new Complaint());
     }
 
-    public List<Complaint> getAllComplaints() {
-        return repo.findAll();
+    public List<Complaint> getAllComplaints(String role) {
+        if ("ADMIN".equals(role)) {          // null-safe comparison
+            return repo.findAll();
+        }
+        return repo.findAll();               // for now return all anyway
     }
+
 
     public List<Complaint> getComplaintByUserId(Integer userId) {
         return repo.findByUserId(userId);
     }
 
-    public Complaint updateComplaint(Integer id, Complaint complaint) {
-        // Ensure the entity exists before trying to save
+    public Complaint updateComplaint(Integer id, Complaint complaint, String role) {
+
         return repo.findById(id)
                 .map(existingComplaint -> {
-                    // Only update if the Postman value isn't null
+                    // description user update kari sake
                     if (complaint.getDescription() != null) {
                         existingComplaint.setDescription(complaint.getDescription());
                     }
+
+                    // status only ADMIN change kari sake
                     if (complaint.getStatus() != null) {
+                        if(!role.equals("ADMIN")){
+                            throw new RuntimeException("Only admin can update status");
+                        }
                         existingComplaint.setStatus(complaint.getStatus());
                     }
-                    if (complaint.getUser() != null) {
+
+                    // user change normally allow nathi karvu (optional)
+                    if (complaint.getUser() != null && role.equals("ADMIN")) {
                         existingComplaint.setUser(complaint.getUser());
                     }
-
                     return repo.save(existingComplaint);
                 }).orElseThrow(() -> new RuntimeException("Complaint not found with id: " + id));
     }
 
-    public String deleteComplaint(Integer id) {
+
+
+
+    public String deleteComplaint(Integer id, String role) {
+
+        if(!role.equals("ADMIN")){
+            throw new RuntimeException("Only admin can delete complaint");
+        }
+
         repo.deleteById(id);
         return "Deleted";
     }
 
-    public String deleteByStatus(String status) {
+    public String deleteByStatus(String status, String role) {
+
+        if(!role.equals("ADMIN")){
+            throw new RuntimeException("Only admin can delete complaints");
+        }
+
         int deletedCount = repo.deleteByStatus(status);
+
         if (deletedCount > 0) {
             return deletedCount + " complaints with status '" + status + "' were deleted.";
         } else {

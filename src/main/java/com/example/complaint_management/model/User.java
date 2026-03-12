@@ -14,6 +14,9 @@ public class User {
     private Integer id;
     private String name;
     private String email;
-    private String role;
+
+    @Column(name = "role")
+    private String role = "USER";
+
     private String password;
 }

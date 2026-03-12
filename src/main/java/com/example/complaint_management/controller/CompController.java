@@ -6,10 +6,16 @@ import com.example.complaint_management.services.CompServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
-
-@CrossOrigin(origins = "http://127.0.0.1:5500")
+@CrossOrigin(origins = "*", methods = {
+        RequestMethod.GET,
+        RequestMethod.POST,
+        RequestMethod.PUT,
+        RequestMethod.DELETE,
+        RequestMethod.OPTIONS
+})
 @RequestMapping("/compl")
 @RestController
 public class CompController {
@@ -28,8 +34,10 @@ public class CompController {
     }
 
     @GetMapping("/all")
-    public List<Complaint> getAllComplaints(){
-        return service.getAllComplaints();
+    public List<Complaint> getAllComplaints(
+            @RequestParam(required = false, defaultValue = "ADMIN") String role){
+
+        return service.getAllComplaints(role);
     }
 
     @GetMapping("/user/{userId}")
@@ -38,24 +46,23 @@ public class CompController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateComplaintById(@PathVariable Integer id, @RequestBody Complaint complaint) {
-        try {
-            Complaint updated = service.updateComplaint(id, complaint);
-            return ResponseEntity.ok(updated); // Returns 200 OK and the data
-        } catch (RuntimeException e) {
-            // Returns 404 Not Found and your specific message
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
+    public Complaint updateComplaint(@PathVariable Integer id,
+                                     @RequestBody Complaint complaint,
+                                     @RequestParam(required = false, defaultValue = "ADMIN") String role) {
+        return service.updateComplaint(id, complaint, role);
     }
 
     @DeleteMapping("/del/{id}")
-    public String deleteComplaint(@PathVariable Integer id){
-          return service.deleteComplaint(id);
+    public String deleteComplaint(@PathVariable Integer id,
+                                  @RequestParam String role){
+
+        return service.deleteComplaint(id, role);
     }
 
-    @DeleteMapping("/dele")
-    public String deleteByStatus(@RequestParam String status) {
-        return service.deleteByStatus(status);
-    }
+   @DeleteMapping("/dele")
+   public String deleteByStatus(@RequestParam String status,
+                                @RequestParam(required = false, defaultValue = "ADMIN") String role) {
+       return service.deleteByStatus(status, role);
+   }
 
 }
