@@ -869,3 +869,366 @@ body {
   background: rgba(0,0,0,0.55); z-index: 99;
 }
 .sidebar-backdrop.show { display: block; }
+
+/* ===== ROLE SWITCHER (topbar) ===== */
+.role-switcher {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg-card2);
+  border: 1px solid var(--border-2);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 11.5px; font-weight: 700;
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.4px;
+  user-select: none;
+}
+.role-switcher:hover { background: var(--accent-dim); border-color: var(--accent); }
+.role-switcher i:first-child { font-size: 13px; }
+
+/* USER role = blue tint */
+.role-switcher.user-role { color: var(--blue); border-color: rgba(96,165,250,0.3); }
+.role-switcher.user-role:hover { background: var(--blue-bg); border-color: var(--blue); }
+
+/* ===== ROLE-BASED VISIBILITY ===== */
+.admin-only    { display: flex !important; }
+.admin-only-el { display: table-cell !important; }
+
+.hidden-for-user.admin-only    { display: flex !important; }
+.hidden-for-user.admin-only-el { display: table-cell !important; }
+
+/* These get toggled by JS */
+.role-hidden              { display: none !important; }
+.role-hidden-inline       { display: none !important; }
+select.role-disabled      { pointer-events: none; opacity: 0.45; cursor: not-allowed; }
+
+/* USER restricted badge on sections */
+.user-restricted-notice {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--blue-bg);
+  border: 1px solid rgba(96,165,250,0.25);
+  border-radius: 8px; padding: 12px 16px;
+  color: var(--blue); font-size: 13px;
+  margin-bottom: 16px;
+}
+.user-restricted-notice i { flex-shrink: 0; }
+
+/* ===== PROFILE PAGE ===== */
+.profile-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.profile-card {
+  overflow: visible !important;
+  padding-bottom: 20px;
+}
+
+.profile-banner {
+  height: 90px;
+  background: linear-gradient(135deg, var(--accent-dim), var(--blue-bg));
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+[data-theme="dark"] .profile-banner {
+  background: linear-gradient(135deg, rgba(163,230,53,0.12), rgba(96,165,250,0.10));
+}
+
+[data-theme="light"] .profile-banner {
+  background: linear-gradient(135deg, rgba(22,163,74,0.10), rgba(37,99,235,0.08));
+}
+
+.profile-avatar-wrap {
+  display: flex; flex-direction: column;
+  align-items: center;
+  margin-top: -36px;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-avatar {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, var(--accent), var(--green));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px; font-weight: 800;
+  color: var(--accent-text);
+  border: 4px solid var(--bg-card);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.profile-badge {
+  margin-top: 8px;
+  padding: 3px 12px;
+  border-radius: 99px;
+  font-size: 10px; font-weight: 800;
+  letter-spacing: 1px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid var(--accent-glow);
+}
+
+.profile-badge.user-badge {
+  background: var(--blue-bg);
+  color: var(--blue);
+  border-color: rgba(96,165,250,0.3);
+}
+
+.profile-info {
+  text-align: center;
+  padding: 12px 20px 0;
+}
+
+.profile-info h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px; font-weight: 700;
+  color: var(--text); margin-bottom: 4px;
+}
+
+.profile-info p {
+  font-size: 13px; color: var(--text-2);
+}
+
+.profile-joined {
+  font-size: 11.5px; color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.profile-stats {
+  display: flex; align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 18px 16px 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 0;
+}
+
+.profile-stat {
+  flex: 1; text-align: center;
+  display: flex; flex-direction: column; gap: 3px;
+}
+
+.profile-stat-divider {
+  width: 1px; height: 32px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+.ps-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 20px; font-weight: 800;
+  color: var(--text);
+}
+
+.ps-label {
+  font-size: 10.5px; color: var(--text-2);
+  font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* Profile right */
+.profile-right { display: flex; flex-direction: column; gap: 16px; }
+
+.profile-field {
+  display: flex; align-items: center;
+  gap: 0;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.profile-field:last-child { border-bottom: none; }
+
+.pf-label {
+  font-size: 12px; font-weight: 600;
+  color: var(--text-2);
+  min-width: 130px;
+  display: flex; align-items: center; gap: 7px;
+}
+.pf-label i { color: var(--accent); width: 14px; text-align: center; }
+
+.pf-value {
+  font-size: 13.5px; color: var(--text);
+  font-weight: 500;
+}
+
+/* Permissions list */
+.permissions-list {
+  padding: 14px 22px 18px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+
+.perm-item {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px;
+}
+
+.perm-icon {
+  width: 28px; height: 28px;
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; flex-shrink: 0;
+}
+
+.perm-allowed { background: var(--green-bg); color: var(--green); }
+.perm-denied  { background: var(--red-bg);   color: var(--red); }
+
+.perm-text { color: var(--text-2); flex: 1; }
+.perm-text strong { color: var(--text); font-weight: 600; }
+
+/* Sidebar footer hover animation */
+#sidebarProfileBtn {
+  transition: background 0.2s ease;
+}
+#sidebarProfileBtn:hover {
+  background: var(--bg-hover);
+}
+
+@media (max-width: 900px) {
+  .profile-layout { grid-template-columns: 1fr; }
+}
+
+/* ─── FUNNY ADMIN-ONLY POPUP ─────────────────────────────────────────────── */
+#admin-funny-popup,
+#become-admin-popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#admin-funny-popup.show,
+#become-admin-popup.show {
+  opacity: 1;
+}
+
+
+.funny-box {
+  background: var(--bg-card);
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  padding: 36px 40px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(163,230,53,0.2), 0 20px 60px rgba(0,0,0,0.5);
+  transform: scale(0.8) translateY(40px);
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.funny-emoji {
+  font-size: 72px;
+  line-height: 1;
+  margin-bottom: 12px;
+  animation: funnyBounce 0.6s ease infinite alternate;
+}
+
+@keyframes funnyBounce {
+  from { transform: translateY(0) rotate(-5deg); }
+  to   { transform: translateY(-10px) rotate(5deg); }
+}
+
+.funny-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.funny-msg {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.funny-sub {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+  padding: 8px 14px;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.funny-btn {
+  background: var(--accent);
+  color: var(--accent-text);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, opacity 0.15s;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.funny-btn:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* ─── BECOME ADMIN BAR ───────────────────────────────────────────────────── */
+.become-admin-bar {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.become-admin-btn {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(163,230,53,0.08), rgba(163,230,53,0.03));
+  border: 1px dashed var(--accent);
+  border-radius: 10px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+.become-admin-btn:hover {
+  background: linear-gradient(135deg, rgba(163,230,53,0.15), rgba(163,230,53,0.06));
+  transform: scale(1.02);
+  box-shadow: 0 0 16px rgba(163,230,53,0.15);
+}
+
+.become-admin-emoji {
+  font-size: 26px;
+  animation: evilFloat 1.5s ease-in-out infinite alternate;
+  flex-shrink: 0;
+}
+@keyframes evilFloat {
+  from { transform: translateY(0) rotate(-8deg); }
+  to   { transform: translateY(-5px) rotate(8deg); }
+}
+
+.become-admin-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.become-admin-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'Space Grotesk', sans-serif;
+}
+.become-admin-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+}

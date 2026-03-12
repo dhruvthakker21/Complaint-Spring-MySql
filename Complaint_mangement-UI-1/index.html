@@ -16,7 +16,7 @@
       <div class="logo-icon"><i class="fa-solid fa-bolt"></i></div>
       <div class="logo-text-wrap">
         <span class="logo-text">ComplaintOS</span>
-        <span class="logo-sub">Admin Panel</span>
+        <span class="logo-sub" id="sidebar-role-label">Admin Panel</span>
       </div>
     </div>
 
@@ -26,38 +26,59 @@
         <div class="nav-icon"><i class="fa-solid fa-chart-pie"></i></div>
         <span>Dashboard</span>
       </a>
-      <a href="#" class="nav-item" data-section="users">
+
+      <!-- ADMIN ONLY nav items -->
+      <a href="#" class="nav-item admin-only" data-section="users">
         <div class="nav-icon"><i class="fa-solid fa-users"></i></div>
         <span>Users</span>
       </a>
+
       <a href="#" class="nav-item" data-section="complaints">
         <div class="nav-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
         <span>Complaints</span>
       </a>
+
       <span class="nav-label">ACTIONS</span>
       <a href="#" class="nav-item" data-section="create-complaint">
         <div class="nav-icon"><i class="fa-solid fa-plus-circle"></i></div>
         <span>Create Complaint</span>
       </a>
-      <a href="#" class="nav-item" data-section="lookup">
+
+      <!-- ADMIN ONLY nav items -->
+      <a href="#" class="nav-item admin-only" data-section="lookup">
         <div class="nav-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
         <span>Lookup</span>
       </a>
-      <a href="#" class="nav-item" data-section="delete-status">
+      <a href="#" class="nav-item admin-only" data-section="delete-status">
         <div class="nav-icon"><i class="fa-solid fa-trash-can"></i></div>
         <span>Delete By Status</span>
       </a>
     </nav>
 
-    <div class="sidebar-footer">
+    <!-- Sidebar footer — clickable for profile -->
+    <div class="sidebar-footer" id="sidebarProfileBtn" title="View Profile" style="cursor:pointer">
       <div class="sidebar-user">
-        <div class="avatar">A</div>
+        <div class="avatar" id="sidebar-avatar">A</div>
         <div class="user-info">
-          <span class="user-name">Admin</span>
-          <span class="user-role">System Administrator</span>
+          <span class="user-name" id="sidebar-username">Admin</span>
+          <span class="user-role" id="sidebar-userrole">System Administrator</span>
         </div>
+        <i class="fa-solid fa-chevron-right" style="margin-left:auto;font-size:11px;color:var(--text-dim)"></i>
       </div>
     </div>
+
+    <!-- USER ONLY — Become Admin temptation bar -->
+    <div class="become-admin-bar" id="becomeAdminBarUser" style="display:none">
+      <button class="become-admin-btn" id="becomeAdminBtn">
+        <span class="become-admin-emoji" id="becomeAdminEmoji">😈</span>
+        <div class="become-admin-text">
+          <span class="become-admin-title">Want to be ADMIN?</span>
+          <span class="become-admin-sub">Click karo... dare hai toh 👀</span>
+        </div>
+        <i class="fa-solid fa-bolt" style="color:var(--accent);font-size:14px"></i>
+      </button>
+    </div>
+
   </aside>
 
   <main class="main-content">
@@ -71,13 +92,19 @@
         </div>
       </div>
       <div class="topbar-actions">
+        <!-- Role switcher (for demo/dev) -->
+        <div class="role-switcher" id="roleSwitcher" title="Switch Role (Demo)">
+          <i class="fa-solid fa-user-shield"></i>
+          <span id="roleLabel">ADMIN</span>
+          <i class="fa-solid fa-chevron-down" style="font-size:10px"></i>
+        </div>
         <button class="theme-toggle" id="themeToggle" title="Toggle Theme">
           <i class="fa-solid fa-moon" id="themeIcon"></i>
         </button>
         <button class="refresh-btn" id="refreshBtn" title="Refresh">
           <i class="fa-solid fa-rotate-right"></i>
         </button>
-        <div class="api-status" id="apiStatus" title="API Status">
+        <div class="api-status" title="API Status">
           <span class="status-dot"></span>
           <span class="status-text">Live</span>
         </div>
@@ -86,15 +113,14 @@
 
     <div class="toast" id="toast"></div>
 
-    <!-- DASHBOARD -->
+    <!-- ========== DASHBOARD ========== -->
     <section class="section active" id="section-dashboard">
       <div class="section-header">
         <div>
           <h2>Dashboard</h2>
-          <p>Welcome back, Admin. Here's what's happening.</p>
+          <p id="dashboard-welcome">Welcome back! Here's what's happening.</p>
         </div>
       </div>
-
       <div class="stats-grid">
         <div class="stat-card stat-blue">
           <div class="stat-top">
@@ -130,7 +156,6 @@
         </div>
       </div>
 
-      <!-- Resolution Rate -->
       <div class="card resolution-card">
         <div class="res-header">
           <div>
@@ -176,7 +201,7 @@
       </div>
     </section>
 
-    <!-- USERS -->
+    <!-- ========== USERS (ADMIN ONLY) ========== -->
     <section class="section" id="section-users">
       <div class="section-header">
         <div><h2>User Management</h2><p>Register, search and manage users</p></div>
@@ -188,15 +213,15 @@
           </div>
           <form id="registerUserForm" class="stacked-form">
             <div class="form-group">
-              <label>Full Name</label>
+              <label for="reg-name">Full Name</label>
               <input type="text" id="reg-name" placeholder="John Doe" required/>
             </div>
             <div class="form-group">
-              <label>Email</label>
+              <label for="reg-email">Email</label>
               <input type="email" id="reg-email" placeholder="john@example.com" required/>
             </div>
             <div class="form-group">
-              <label>Password</label>
+              <label for="reg-password">Password</label>
               <input type="password" id="reg-password" placeholder="••••••••" required/>
             </div>
             <button type="submit" class="btn btn-accent"><i class="fa-solid fa-user-plus"></i> Register</button>
@@ -208,7 +233,7 @@
           </div>
           <div class="stacked-form">
             <div class="form-group">
-              <label>Email Address</label>
+              <label for="search-email">Email Address</label>
               <div class="input-row">
                 <input type="email" id="search-email" placeholder="user@example.com"/>
                 <button class="btn btn-accent" id="searchEmailBtn"><i class="fa-solid fa-search"></i></button>
@@ -232,7 +257,7 @@
       </div>
     </section>
 
-    <!-- COMPLAINTS -->
+    <!-- ========== COMPLAINTS ========== -->
     <section class="section" id="section-complaints">
       <div class="section-header">
         <div><h2>Complaints</h2><p>Manage all system complaints</p></div>
@@ -242,7 +267,8 @@
           <i class="fa-solid fa-magnifying-glass"></i>
           <input type="text" id="complaintSearch" placeholder="Search title or description…"/>
         </div>
-        <select id="statusFilter" class="filter-select">
+        <!-- Status filter: admin only -->
+        <select id="statusFilter" class="filter-select admin-only-el">
           <option value="">All Status</option>
           <option value="OPEN">OPEN</option>
           <option value="RESOLVED">RESOLVED</option>
@@ -251,15 +277,29 @@
       </div>
       <div class="card">
         <div class="table-wrap">
-          <table class="data-table">
-            <thead><tr><th>ID</th><th>Title</th><th>Description</th><th>Status</th><th>User</th><th>Created</th><th>Actions</th></tr></thead>
-            <tbody id="complaints-tbody"><tr><td colspan="7" class="loading-row"><span class="spinner"></span> Loading...</td></tr></tbody>
+          <table class="data-table" id="complaints-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>User</th>
+                <!-- Email column: admin only -->
+                <th class="admin-only-el">Email</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="complaints-tbody">
+              <tr><td colspan="8" class="loading-row"><span class="spinner"></span> Loading...</td></tr>
+            </tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- CREATE COMPLAINT -->
+    <!-- ========== CREATE COMPLAINT ========== -->
     <section class="section" id="section-create-complaint">
       <div class="section-header">
         <div><h2>Create Complaint</h2><p>Submit a new complaint</p></div>
@@ -270,15 +310,15 @@
         </div>
         <form id="createComplaintForm" class="stacked-form">
           <div class="form-group">
-            <label>Title</label>
+            <label for="comp-title">Title</label>
             <input type="text" id="comp-title" placeholder="e.g. Internet Not Working" required/>
           </div>
           <div class="form-group">
-            <label>Description</label>
+            <label for="comp-desc">Description</label>
             <textarea id="comp-desc" rows="4" placeholder="Describe the issue…" required></textarea>
           </div>
           <div class="form-group">
-            <label>Assign to User</label>
+            <label for="comp-userid">Assign to User</label>
             <select id="comp-userid" class="filter-select full-width" required>
               <option value="">— Loading users… —</option>
             </select>
@@ -289,7 +329,7 @@
       </div>
     </section>
 
-    <!-- LOOKUP -->
+    <!-- ========== LOOKUP (ADMIN ONLY) ========== -->
     <section class="section" id="section-lookup">
       <div class="section-header">
         <div><h2>Lookup</h2><p>Find user or complaint by ID</p></div>
@@ -299,7 +339,7 @@
           <div class="card-header"><i class="fa-solid fa-id-card"></i><h3>Get User by ID</h3></div>
           <div class="stacked-form">
             <div class="form-group">
-              <label>User ID</label>
+              <label for="lookup-user-id">User ID</label>
               <div class="input-row">
                 <input type="number" id="lookup-user-id" placeholder="e.g. 1" min="1"/>
                 <button class="btn btn-accent" id="lookupUserBtn"><i class="fa-solid fa-search"></i></button>
@@ -321,7 +361,7 @@
           <div class="card-header"><i class="fa-solid fa-file-magnifying-glass"></i><h3>Get Complaint by ID</h3></div>
           <div class="stacked-form">
             <div class="form-group">
-              <label>Complaint ID</label>
+              <label for="lookup-complaint-id">Complaint ID</label>
               <div class="input-row">
                 <input type="number" id="lookup-complaint-id" placeholder="e.g. 1" min="1"/>
                 <button class="btn btn-accent" id="lookupComplaintBtn"><i class="fa-solid fa-search"></i></button>
@@ -333,7 +373,7 @@
       </div>
     </section>
 
-    <!-- DELETE BY STATUS -->
+    <!-- ========== DELETE BY STATUS (ADMIN ONLY) ========== -->
     <section class="section" id="section-delete-status">
       <div class="section-header">
         <div><h2>Delete By Status</h2><p>Bulk delete complaints</p></div>
@@ -346,7 +386,7 @@
         </div>
         <form id="deleteByStatusForm" class="stacked-form">
           <div class="form-group">
-            <label>Status to Delete</label>
+            <label for="del-status">Status to Delete</label>
             <select id="del-status" class="filter-select full-width">
               <option value="OPEN">OPEN</option>
               <option value="RESOLVED">RESOLVED</option>
@@ -357,9 +397,91 @@
         </form>
       </div>
     </section>
+
+    <!-- ========== PROFILE PAGE ========== -->
+    <section class="section" id="section-profile">
+      <div class="section-header">
+        <div><h2>My Profile</h2><p>Your account information and settings</p></div>
+      </div>
+
+      <div class="profile-layout">
+        <!-- Profile Card -->
+        <div class="card profile-card">
+          <div class="profile-banner"></div>
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" id="profile-avatar-big">A</div>
+            <div class="profile-badge" id="profile-role-badge">ADMIN</div>
+          </div>
+          <div class="profile-info">
+            <h3 id="profile-name">Admin</h3>
+            <p id="profile-email-display">admin@complaintos.com</p>
+            <p class="profile-joined">Member since <span id="profile-joined">—</span></p>
+          </div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <span class="ps-value" id="ps-complaints">—</span>
+              <span class="ps-label">Complaints</span>
+            </div>
+            <div class="profile-stat-divider"></div>
+            <div class="profile-stat">
+              <span class="ps-value" id="ps-open">—</span>
+              <span class="ps-label">Open</span>
+            </div>
+            <div class="profile-stat-divider"></div>
+            <div class="profile-stat">
+              <span class="ps-value" id="ps-resolved">—</span>
+              <span class="ps-label">Resolved</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right side -->
+        <div class="profile-right">
+          <!-- Account Info -->
+          <div class="card">
+            <div class="card-header">
+              <i class="fa-solid fa-circle-user"></i>
+              <h3>Account Information</h3>
+            </div>
+            <div class="stacked-form" style="padding:20px 22px">
+              <div class="profile-field">
+                <span class="pf-label"><i class="fa-solid fa-user"></i> Full Name</span>
+                <span class="pf-value" id="pf-name">—</span>
+              </div>
+              <div class="profile-field">
+                <span class="pf-label"><i class="fa-solid fa-envelope"></i> Email</span>
+                <span class="pf-value" id="pf-email">—</span>
+              </div>
+              <div class="profile-field">
+                <span class="pf-label"><i class="fa-solid fa-shield-halved"></i> Role</span>
+                <span class="pf-value" id="pf-role">—</span>
+              </div>
+              <div class="profile-field">
+                <span class="pf-label"><i class="fa-solid fa-id-badge"></i> User ID</span>
+                <span class="pf-value" id="pf-id">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Permissions card -->
+          <div class="card">
+            <div class="card-header">
+              <i class="fa-solid fa-lock"></i>
+              <h3>Permissions</h3>
+            </div>
+            <div class="permissions-list" id="permissions-list">
+              <!-- filled by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- UPDATE USER MODAL -->
+  <!-- ===== MODALS ===== -->
+
+  <!-- Update User -->
   <div class="modal-overlay" id="updateUserModal">
     <div class="modal">
       <div class="modal-header">
@@ -368,15 +490,15 @@
       </div>
       <form id="updateUserForm" class="stacked-form">
         <input type="hidden" id="upd-user-id"/>
-        <div class="form-group"><label>Full Name</label><input type="text" id="upd-user-name" required/></div>
-        <div class="form-group"><label>Email</label><input type="email" id="upd-user-email" required/></div>
-        <div class="form-group"><label>Password</label><input type="password" id="upd-user-pass" placeholder="Enter password" required/></div>
+        <div class="form-group"><label for="upd-user-name">Full Name</label><input type="text" id="upd-user-name" required/></div>
+        <div class="form-group"><label for="upd-user-email">Email</label><input type="email" id="upd-user-email" required/></div>
+        <div class="form-group"><label for="upd-user-pass">Password</label><input type="password" id="upd-user-pass" placeholder="Enter password" required/></div>
         <button type="submit" class="btn btn-accent"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
       </form>
     </div>
   </div>
 
-  <!-- UPDATE COMPLAINT MODAL -->
+  <!-- Update Complaint -->
   <div class="modal-overlay" id="updateModal">
     <div class="modal">
       <div class="modal-header">
@@ -385,9 +507,10 @@
       </div>
       <form id="updateComplaintForm" class="stacked-form">
         <input type="hidden" id="update-id"/>
-        <div class="form-group"><label>Description</label><textarea id="update-desc" rows="3"></textarea></div>
-        <div class="form-group">
-          <label>Status</label>
+        <div class="form-group"><label for="update-desc">Description</label><textarea id="update-desc" rows="3"></textarea></div>
+        <!-- Status row: admin only in modal -->
+        <div class="form-group admin-only-el" id="update-status-group">
+          <label for="update-status">Status</label>
           <select id="update-status" class="filter-select full-width">
             <option value="OPEN">OPEN</option>
             <option value="RESOLVED">RESOLVED</option>
@@ -398,7 +521,7 @@
     </div>
   </div>
 
-  <!-- VIEW COMPLAINT MODAL -->
+  <!-- View Complaint -->
   <div class="modal-overlay" id="viewModal">
     <div class="modal modal-lg">
       <div class="modal-header">
@@ -409,7 +532,7 @@
     </div>
   </div>
 
-  <!-- CONFIRM MODAL -->
+  <!-- Confirm Delete -->
   <div class="modal-overlay" id="confirmModal">
     <div class="modal modal-sm">
       <div class="modal-header danger">
